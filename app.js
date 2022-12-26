@@ -43,12 +43,6 @@ mongoose.set({ runValidators: true });
 mongoose.connect('mongodb://localhost:27017/mestodb');
 app.use(requestLogger);
 
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
-
 app.post('/signup', celebrateBodyUser, createUser);
 app.post('/signin', celebrateLoginUser, login);
 

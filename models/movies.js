@@ -71,10 +71,6 @@ const movieSchema = new mongoose.Schema({
     required: true,
     minLength: 2,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
 }, { versionKey: false });
 
 export const Movies = mongoose.model('movie', movieSchema);

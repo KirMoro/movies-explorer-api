@@ -12,8 +12,33 @@ export const getMovies = (req, res, next) => {
 };
 
 export const createMovie = (req, res, next) => {
-  const { country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN } = req.body;
-  const newMovie = { country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN, owner: req.user._id };
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    thumbnail,
+    movieId,
+    nameRU,
+    nameEN,
+  } = req.body;
+  const newMovie = {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailerLink,
+    thumbnail,
+    movieId,
+    nameRU,
+    nameEN,
+    owner: req.user._id,
+  };
   Movies.create(newMovie)
     .then((movie) => res.status(constants.HTTP_STATUS_OK).send(movie))
     .catch((err) => {
@@ -30,7 +55,7 @@ export const deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError('Фильм с указанным _id не найден.');
-      } else if (req.user._id !== card.owner.toString()) {
+      } else if (req.user._id !== movie.owner.toString()) {
         throw new ForbiddenError('Отсутствуют права доступа.');
       } else {
         return Movies.findByIdAndRemove(req.params.movieId);

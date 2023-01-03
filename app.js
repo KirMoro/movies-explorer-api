@@ -16,6 +16,8 @@ import { celebrateBodyUser, celebrateLoginUser } from './validators/users.js';
 import { NotFoundError } from './errors/NotFoundError.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
 
+// HELMET + RATE LIMITS + SINGLE ROUTE
+
 const { PORT = 3000 } = process.env;
 
 process.on('unhandledRejection', (err) => {
@@ -40,7 +42,7 @@ const config = dotenv.config({
 app.set('config', config);
 
 mongoose.set({ runValidators: true });
-mongoose.connect('mongodb://localhost:27017/mestodb');
+mongoose.connect(process.env.DB_URL);
 app.use(requestLogger);
 
 app.post('/signup', celebrateBodyUser, createUser);

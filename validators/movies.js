@@ -11,6 +11,7 @@ export const celebrateBodyMovie = celebrate({
     image: Joi.string().regex(urlRegex).uri({ scheme: ['http', 'https'] }).required(),
     trailerLink: Joi.string().regex(urlRegex).uri({ scheme: ['http', 'https'] }).required(),
     thumbnail: Joi.string().regex(urlRegex).uri({ scheme: ['http', 'https'] }).required(),
+    movieId: Joi.number().min(1).required(),
     nameRU: Joi.string().min(2).required(),
     nameEN: Joi.string().min(2).required(),
   }),
@@ -18,6 +19,6 @@ export const celebrateBodyMovie = celebrate({
 
 export const celebrateMovieId = celebrate({
   params: Joi.object({
-    MovieId: Joi.string().hex().length(24).required(),
+    movieId: Joi.string().hex().length(24).required(),
   }).required(),
 });

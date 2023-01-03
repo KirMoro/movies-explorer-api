@@ -27,8 +27,7 @@ export const login = (req, res, next) => {
 };
 
 export const getUserById = (req, res, next) => {
-  const userId = (req.params.userId === 'me') ? req.user._id : req.params.userId;
-  Users.findById(userId)
+  Users.findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден.');
@@ -50,7 +49,7 @@ export const createUser = (req, res, next) => {
     .then((hash) => {
       req.body.password = hash;
 
-      return User.create(req.body);
+      return Users.create(req.body);
     })
     .then((document) => {
       const { password: removed, ...fields } = document.toObject();

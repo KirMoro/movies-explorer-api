@@ -8,6 +8,7 @@ const emailRegex = /^.+@.+$/;
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    require: true,
     minlength: 2,
     maxlength: 30,
   },

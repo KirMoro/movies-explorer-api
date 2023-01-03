@@ -12,7 +12,7 @@ export const getMovies = (req, res, next) => {
       movies.forEach((movie) => {
         if (movie.owner.toString() === req.user._id) {
           userMovies.push(movie);
-        } else res.send([]);
+        }
       });
       res.send(userMovies);
     })

@@ -8,15 +8,10 @@ import * as path from 'path';
 import { errors } from 'celebrate';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import { userRoutes } from './routes/users.js';
-import { movieRoutes } from './routes/movies.js';
-import { createUser, login } from './controllers/users.js';
-import { auth } from './middlewares/auth.js';
-import { celebrateBodyUser, celebrateLoginUser } from './validators/users.js';
-import { NotFoundError } from './errors/NotFoundError.js';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
+import { router } from './routes/index.js';
 
-// HELMET + RATE LIMITS + SINGLE ROUTE
+// HELMET + RATE LIMITS
 
 const { PORT = 3000 } = process.env;
 
@@ -44,16 +39,8 @@ app.set('config', config);
 mongoose.set({ runValidators: true });
 mongoose.connect(process.env.DB_URL);
 app.use(requestLogger);
-
-app.post('/signup', celebrateBodyUser, createUser);
-app.post('/signin', celebrateLoginUser, login);
-
-app.use('/users', auth, userRoutes);
-app.use('/movies', auth, movieRoutes);
-
-app.all('/*', auth, (req, res, next) => next(new NotFoundError('Запрошена несуществующая страница')));
+app.use(router);
 app.use(errorLogger);
-
 app.use(errors());
 app.use((err, req, res, next) => {
   const status = err.status || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;

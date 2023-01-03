@@ -5,27 +5,22 @@ const movieSchema = new mongoose.Schema({
   country: {
     type: String,
     required: true,
-    minLength: 2,
   },
   director: {
     type: String,
     required: true,
-    minLength: 2,
   },
   duration: {
     type: Number,
     required: true,
-    minLength: 2,
   },
   year: {
     type: String,
     required: true,
-    minLength: 2,
   },
   description: {
     type: String,
     required: true,
-    minLength: 2,
   },
   image: {
     type: String,
@@ -59,17 +54,14 @@ const movieSchema = new mongoose.Schema({
   movieId: {
     type: Number,
     required: true,
-    minLength: 1,
   },
   nameRU: {
     type: String,
     required: true,
-    minLength: 2,
   },
   nameEN: {
     type: String,
     required: true,
-    minLength: 2,
   },
 }, { versionKey: false });
 

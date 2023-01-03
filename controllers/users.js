@@ -14,16 +14,18 @@ export const login = (req, res, next) => {
 
   return Users.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign(
-        { _id: user._id },
-        JWT_SALT,
-        { expiresIn: '7d' },
-      );
-      res.send({ token });
+      if (!user) {
+        throw new UnauthorizedError('Неправильные почта или пароль');
+      } else {
+        const token = jwt.sign(
+          { _id: user._id },
+          JWT_SALT,
+          { expiresIn: '7d' },
+        );
+        res.send({ token });
+      }
     })
-    .catch(() => {
-      next(new UnauthorizedError('Неправильные почта или пароль'));
-    });
+    .catch(next);
 };
 
 export const getUserById = (req, res, next) => {
@@ -84,6 +86,8 @@ export const updateUserProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля.'));
+      } else if (err.code === 11000) {
+        next(new ConflictError('Пользователь с такой почтой уже существует'));
       } else {
         next(new ServerError(err.message));
       }

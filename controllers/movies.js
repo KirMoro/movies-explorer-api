@@ -7,42 +7,23 @@ import { ForbiddenError } from '../errors/ForbiddenError.js';
 
 export const getMovies = (req, res, next) => {
   Movies.find({})
-    .then((movies) => res.send(movies))
+    .then((movies) => {
+      const userMovies = [];
+      movies.forEach((movie) => {
+        if (movie.owner.toString() === req.user._id) {
+          userMovies.push(movie);
+        } else res.send([]);
+      });
+      res.send(userMovies);
+    })
     .catch(next);
 };
 
 export const createMovie = (req, res, next) => {
-  const {
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    nameRU,
-    nameEN,
-  } = req.body;
-  const newMovie = {
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    nameRU,
-    nameEN,
-    owner: req.user._id,
-  };
-  Movies.create(newMovie)
+  Movies.create({ ...req.body, owner: req.user._id })
     .then((movie) => res.status(constants.HTTP_STATUS_OK).send(movie))
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         next(new BadRequestError('Переданы некорректные данные при создании фильма.'));
       } else {
         next(new ServerError(err.message));

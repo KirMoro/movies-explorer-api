@@ -15,6 +15,7 @@ export const auth = (req, res, next) => {
     payload = jwt.verify(token, JWT_SALT);
   } catch (err) {
     next(new UnauthorizedError('Необходима авторизация.'));
+    return;
   }
   req.user = payload;
   next();

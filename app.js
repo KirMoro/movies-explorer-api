@@ -11,8 +11,6 @@ import cors from 'cors';
 import { requestLogger, errorLogger } from './middlewares/logger.js';
 import { router } from './routes/index.js';
 
-// HELMET + RATE LIMITS
-
 const { PORT = 3000 } = process.env;
 
 process.on('unhandledRejection', (err) => {

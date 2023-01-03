@@ -21,12 +21,3 @@ export const celebrateProfile = celebrate({
     email: Joi.string().email().required(),
   }),
 });
-
-export const celebrateUserId = celebrate({
-  params: Joi.object({
-    userId: Joi.alternatives().try(
-      Joi.string().equal('me'),
-      Joi.string().hex().length(24).required(),
-    ).required(),
-  }).required(),
-});

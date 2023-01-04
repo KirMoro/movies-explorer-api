@@ -6,15 +6,9 @@ import { NotFoundError } from '../errors/NotFoundError.js';
 import { ForbiddenError } from '../errors/ForbiddenError.js';
 
 export const getMovies = (req, res, next) => {
-  Movies.find({})
+  Movies.find({ owner: req.user._id })
     .then((movies) => {
-      const userMovies = [];
-      movies.forEach((movie) => {
-        if (movie.owner.toString() === req.user._id) {
-          userMovies.push(movie);
-        }
-      });
-      res.send(userMovies);
+      res.send(movies);
     })
     .catch(next);
 };

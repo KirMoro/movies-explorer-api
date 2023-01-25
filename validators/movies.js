@@ -3,7 +3,7 @@ import { urlRegex } from '../models/users.js';
 
 export const celebrateBodyMovie = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required(),
+    country: Joi.string(),
     director: Joi.string().required(),
     duration: Joi.number().required(),
     year: Joi.string().required(),
